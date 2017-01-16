@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class TestPersonasDaoImpl {
 	private PersonaDao personaDao;
 	
 	@Test
+	@Ignore
 	public void deberiaMostrarPersonas() {
 		try {
 			System.out.println();
@@ -41,6 +43,28 @@ public class TestPersonasDaoImpl {
 			
 			// Segun el numero de personas recuperadas, deberia ser el mismo de la tabla
 			assertEquals(contadorPersonas, personaDao.contadorPersonas());
+			
+		} catch (Exception e) {
+			logger.error("Error JDBC: " + e);
+		}
+	}
+	
+	@Test
+	public void testContarPersonasPorNombre() {
+		try {
+			System.out.println();
+			logger.info("START TEST: testContarPersonasPorNombre()");
+			
+			String nombre ="Juan";
+			Persona personaEjemplo = new Persona();
+			personaEjemplo.setNombre(nombre);
+			
+			int noPersonasEncontradas = personaDao.contadorPersonaPorNombre(personaEjemplo);
+			
+			logger.info("Personas encontradas por nombre '" + nombre + "': " + noPersonasEncontradas);
+			assertEquals(2, noPersonasEncontradas);
+			
+			logger.info("END TEST: testContarPersonasPorNombre()");
 			
 		} catch (Exception e) {
 			logger.error("Error JDBC: " + e);
