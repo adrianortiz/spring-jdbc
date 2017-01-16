@@ -73,6 +73,7 @@ public class TestPersonasDaoImpl {
 	}
 	
 	@Test
+	@Ignore
 	public void deberiaEncontrarPersonaPorId() {
 		try {
 			System.out.println();
@@ -90,6 +91,37 @@ public class TestPersonasDaoImpl {
 			logger.info("ENDS TEST: deberiaEncontrarPersonaPorId()");
 		} catch (Exception e) {
 			logger.error("Error JDBC: ", e);
+		}
+	}
+	
+	@Test
+	public void deberiaInsertarPersona() {
+		try {
+			System.out.println();
+			logger.info("START TEST: deberiaInsertarPersona()");
+			
+			// El script de datos tiene 3 registros
+			assertEquals(3, personaDao.contadorPersonas());
+			
+			Persona persona = new Persona();
+			persona.setNombre("Remedios");
+			persona.setApePaterno("Ortiz");
+			persona.setApeMaterno("Martinez");
+			persona.setEmail("reme@gmail.com");
+			
+			personaDao.insertPersona(persona);
+			
+			// Recuperamos a la persona recien insertada por su Email
+			persona = personaDao.getPersonaByEmail(persona);
+			logger.info("PERSON INSERTED: " + persona);
+			
+			// Deberia haber ya 4 personas
+			assertEquals(4, personaDao.contadorPersonas());
+			
+			logger.info("ENDS TEST: deberiaInsertarPersona()");
+			
+		} catch (Exception e) {
+			logger.error("Error JDBC ", e);
 		}
 	}
 

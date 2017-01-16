@@ -55,7 +55,8 @@ public class PersonaDaoImpl implements PersonaDao {
 	
 	@Override
 	public void insertPersona(Persona persona) {
-		
+		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(persona);
+		this.namedParameterJdbcTemplate.update(SQL_INSERT_PERSONA, parameterSource);
 	}
 
 	@Override
@@ -120,7 +121,13 @@ public class PersonaDaoImpl implements PersonaDao {
 
 	@Override
 	public Persona getPersonaByEmail(Persona persona) {
-		return null;
+		String sql = "SELECT * FROM PERSONA WHERE email = :email";
+		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(persona);
+		
+		// Si no se tiene el objeto RowMapper, se puede utilizar la siguiente linea para crear este objeto
+		// RowMapper<Persona> personaRowMapper = ParameterizedBeanPropertyRowMapper.newInstance(Persona.class);
+		
+		return this.namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new PersonaRowMapper());
 	}
 
 }
