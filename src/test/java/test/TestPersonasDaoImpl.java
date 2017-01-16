@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -127,6 +128,7 @@ public class TestPersonasDaoImpl {
 	}
 	
 	@Test
+	@Ignore
 	public void deberiaActualizarPersona() {
 		try {
 			System.out.println();
@@ -157,6 +159,47 @@ public class TestPersonasDaoImpl {
 			
 		} catch (Exception e) {
 			logger.error("Error JDBC ", e);
+		}
+	}
+	
+	@Test
+	public void deberiaEliminarPersona() {
+		try {
+			System.out.println();
+			logger.info("START TEST: deberiaEliminarPersona()");
+			
+			// Buscamos eliminar la persona con id 2
+			int idPersona = 2;
+			
+			Persona persona = personaDao.findPersonaById(idPersona);
+			logger.info("Persona a eliminar (id=" + idPersona + "): " + persona);
+			
+			// Eliminamos la persona recuperada
+			personaDao.deletePersona(persona);
+			
+			persona = personaDao.findPersonaById(idPersona);
+			
+			// Deberia de regresar nulo al buscar la persona 2
+			assertNull(persona);
+			
+			// Imprimos todo el objeto
+			logger.info("Nuevo listado de personas:");
+			
+			List<Persona> personas = personaDao.findAllPersonas();
+			
+			int contadorPersonas = 0;
+			for (Persona persona2 : personas) {
+				logger.info("Persona: " + persona2);
+				contadorPersonas++;
+			}
+			
+			// Segun el numero de personas recuperadas, deberia ser el mismo de la tabla
+			assertEquals(contadorPersonas, personaDao.contadorPersonas());
+			
+			logger.info("ENDS TEST: deberiaEliminarPersona()");
+			System.out.println();
+		} catch (Exception e) {
+			logger.error("Error JDBC: ", e);
 		}
 	}
 

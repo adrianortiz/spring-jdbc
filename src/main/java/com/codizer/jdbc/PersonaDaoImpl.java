@@ -67,7 +67,8 @@ public class PersonaDaoImpl implements PersonaDao {
 
 	@Override
 	public void deletePersona(Persona persona) {
-		
+		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(persona);
+		this.namedParameterJdbcTemplate.update(SQL_DELETE_PERSONA, parameterSource);
 	}
 
 	@Override
