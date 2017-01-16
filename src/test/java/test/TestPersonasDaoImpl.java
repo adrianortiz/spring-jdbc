@@ -95,6 +95,7 @@ public class TestPersonasDaoImpl {
 	}
 	
 	@Test
+	@Ignore
 	public void deberiaInsertarPersona() {
 		try {
 			System.out.println();
@@ -119,6 +120,40 @@ public class TestPersonasDaoImpl {
 			assertEquals(4, personaDao.contadorPersonas());
 			
 			logger.info("ENDS TEST: deberiaInsertarPersona()");
+			
+		} catch (Exception e) {
+			logger.error("Error JDBC ", e);
+		}
+	}
+	
+	@Test
+	public void deberiaActualizarPersona() {
+		try {
+			System.out.println();
+			logger.info("START TEST deberiaActualizarPersona()");
+			
+			int idPersona = 1;
+			
+			Persona persona = personaDao.findPersonaById(idPersona);
+			
+			logger.info("Persona a modificar (id=" + idPersona + "): " + persona);
+			
+			// Atualizamos nombre y apellido paterno
+			persona.setNombre("Administrador");
+			persona.setApePaterno("Sistemas");
+			
+			personaDao.updatePersona(persona);
+			
+			// voldemos a leer el usuario
+			persona = personaDao.findPersonaById(idPersona);
+			
+			// segun la persona recuperada, deberia ser la misma que el registro 1
+			assertEquals("Administrador", persona.getNombre());
+			
+			// Imprimimos todo el objeto
+			logger.info("Persona modificada (id=" + idPersona + "): " + persona);
+			
+			logger.info("ENDS TEST: deberiaActualizarPersona()");
 			
 		} catch (Exception e) {
 			logger.error("Error JDBC ", e);

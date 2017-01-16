@@ -61,7 +61,8 @@ public class PersonaDaoImpl implements PersonaDao {
 
 	@Override
 	public void updatePersona(Persona persona) {
-		
+		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(persona);
+		this.namedParameterJdbcTemplate.update(SQL_UPDATE_PERSONA, parameterSource);
 	}
 
 	@Override
