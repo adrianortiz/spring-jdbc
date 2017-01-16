@@ -50,6 +50,7 @@ public class TestPersonasDaoImpl {
 	}
 	
 	@Test
+	@Ignore
 	public void testContarPersonasPorNombre() {
 		try {
 			System.out.println();
@@ -64,10 +65,31 @@ public class TestPersonasDaoImpl {
 			logger.info("Personas encontradas por nombre '" + nombre + "': " + noPersonasEncontradas);
 			assertEquals(2, noPersonasEncontradas);
 			
-			logger.info("END TEST: testContarPersonasPorNombre()");
+			logger.info("ENDS TEST: testContarPersonasPorNombre()");
 			
 		} catch (Exception e) {
-			logger.error("Error JDBC: " + e);
+			logger.error("Error JDBC: ", e);
+		}
+	}
+	
+	@Test
+	public void deberiaEncontrarPersonaPorId() {
+		try {
+			System.out.println();
+			logger.info("START TEST: deberiaEncontrarPersonaPorId()");
+			
+			int idPersona = 1;
+			Persona persona = personaDao.findPersonaById(idPersona);
+			
+			// Segun la persona recuperada, deberia ser la misma que el registro 1
+			assertEquals("Admin", persona.getNombre());
+			
+			// Imprimimos todo el objeto
+			logger.info("Persona recuperada (id=" + idPersona + "): " + persona);
+
+			logger.info("ENDS TEST: deberiaEncontrarPersonaPorId()");
+		} catch (Exception e) {
+			logger.error("Error JDBC: ", e);
 		}
 	}
 

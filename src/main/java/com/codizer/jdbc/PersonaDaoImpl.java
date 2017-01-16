@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -69,7 +70,21 @@ public class PersonaDaoImpl implements PersonaDao {
 
 	@Override
 	public Persona findPersonaById(long idPersona) {
-		return null;
+		Persona persona = null;
+		
+		try {
+			// Utilizamos la clase PersonaRowMapper
+			persona = jdbcTemplate.queryForObject(SQL_SELECT_PERSONA_BY_ID, 
+					new PersonaRowMapper(), idPersona);
+		} catch (EmptyResultDataAccessException e) {
+			persona = null;
+		}
+		
+		return persona;
+		
+		// Esta es otra forma sin utilizar la clase PersonaRowMapper
+		// BeanPropertyRowMapper<Persona> personaRowMapper = BeanPropertyRowMapper.newInstance(Persona.class);
+		// return jdbcTemplate.queryForObject(SQL_SELECT_PERSONA_BY_ID, personaRowMapper, idPersona);
 	}
 
 	@Override
